@@ -28,10 +28,10 @@ class ComposeViewController: UIViewController {
   func setNavigationItems() {
     self.title = "Compose"
     
-    var cancelBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("cancelBtnTapped"))
+    let cancelBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("cancelBtnTapped"))
     self.navigationItem.leftBarButtonItem = cancelBarButtonItem
     
-    var postBarButtonItem = UIBarButtonItem(title: "Post", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("postBtnTapped"))
+    let postBarButtonItem = UIBarButtonItem(title: "Post", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("postBtnTapped"))
     self.navigationItem.rightBarButtonItem = postBarButtonItem
   }
   

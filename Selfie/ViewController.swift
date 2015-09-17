@@ -131,14 +131,10 @@ class ViewController: UIViewController {
     self.activityIndicatorView.hidden = false
     
     // validate presence of all required parameters
-    if count(self.signupNameTextField.text) > 0 && count(self.signupEmailTextField.text) > 0 && count(self.signupPasswordTextField) > 0 {
-        
-        makeSignUpRequest(self.signupNameTextField, userEmail: self.signupEmailTextField, userPassword: self.signupPasswordTextField)
-        
+    if self.signupNameTextField.text?.characters.count > 0 && self.signupEmailTextField.text?.characters.count > 0 && self.signupPasswordTextField.text?.characters.count > 0 {
+        makeSignUpRequest(self.signupNameTextField.text!, userEmail: self.signupEmailTextField.text!, userPassword: self.signupPasswordTextField.text!)
     } else {
-        
         self.displayAlertMessage("Parameters Required", alertDescription: "Some of the parameters are missing")
-        
     }
   }
   
@@ -160,6 +156,30 @@ class ViewController: UIViewController {
   }
   
   func makeSignUpRequest(userName:String, userEmail:String, userPassword:String) {
+    // 1. Create HTTP request and set rewiest header
+    let httpRequest = httpHelper.buildRequest("signup", method: "POST", authType: HTTPRequestAuthType.HTTPBasicAuth)
+    
+    // 2. Passward is encrypted with the API key
+    let encrypted_password = AESCrypt.encrypt(userPassword, password: HTTPHelper.API_AUTH_PASSWORD)
+    
+    // 3. Send the request Body
+    httpRequest.HTTPBody = "{\"full_name\":\"\(userName)\", \"email\":\"\(userEmail)\", \"password\":\"\(encrypted_password)\"}".dataUsingEncoding(NSUTF8StringEncoding)
+    
+    // 4. Send the request
+    httpHelper.sendRequest(httpRequest, completion: {
+        (data: NSData!, error: NSError!) in
+        if error != nil {
+            let errorMessage = self.httpHelper.getErrorMessage(error)
+            self.displayAlertMessage("ERROR", alertDescription: errorMessage as String)
+            
+            return
+        }
+        
+        self.displaySignupView()
+        self.displayAlertMessage("Success", alertDescription: "Account has been created")
+    })
+    
+    
   }
   
   func makeSignInRequest(userEmail:String, userPassword:String) {   

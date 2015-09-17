@@ -108,7 +108,7 @@ extension SelfieCollectionViewController : UINavigationControllerDelegate, UIIma
     self.presentViewController(imagePickerController, animated: true, completion: nil)
   }
   
-  func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+  func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
   }
 }
 
